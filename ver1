@@ -21,7 +21,7 @@
       box-sizing: border-box;
     }
 
-    h1 {
+    h2 {
       font-family: 'Quiche Sans', serif;
       font-size: 2.2em;
       margin-bottom: 20px;
