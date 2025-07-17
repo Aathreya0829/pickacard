@@ -1,50 +1,49 @@
 body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f4ef;
+  color: #333;
   margin: 0;
-  font-family: "Georgia", serif;
-  background: linear-gradient(to top, #5c4033, #d2b48c);
-  color: #fff8f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 0;
 }
 
 .container {
-  max-width: 500px;
-  width: 100%;
+  text-align: center;
+  padding: 2rem;
 }
 
-.card {
-  background: #3e2723;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-  transition: all 0.3s ease;
-}
-
-.card img {
-  max-width: 100%;
-  border-radius: 10px;
-  margin: 20px 0;
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }
 
 button {
-  background: #d2b48c;
-  color: #3e2723;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  background-color: #a9746e;
+  color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 20px;
-  transition: background 0.3s;
+  margin-bottom: 2rem;
 }
 
 button:hover {
-  background: #e0cba0;
+  background-color: #935f5a;
+}
+
+.card {
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
 }
 
 .hidden {
@@ -53,15 +52,11 @@ button:hover {
 
 @media (max-width: 600px) {
   .card {
-    padding: 20px;
+    width: 90%;
   }
 
-  h1, h2 {
-    font-size: 1.5em;
-  }
-
-  p {
-    font-size: 1em;
+  h1 {
+    font-size: 1.5rem;
   }
 
   button {
