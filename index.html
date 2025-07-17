@@ -6,160 +6,263 @@
   <title>Pick a Card</title>
   <style>
     body {
+      font-family: 'Georgia', serif;
       margin: 0;
-      font-family: "Georgia", serif;
-      background-color: #fffaf5;
+      padding: 0;
+      background: #fffaf4;
       color: #4b2e2e;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
     }
 
     h1 {
-      font-size: 2em;
-      text-align: center;
+      margin-top: 40px;
+      font-size: 2.5em;
       color: #4b2e2e;
-      margin-bottom: 10px;
     }
 
-    h2 {
+    p {
+      max-width: 600px;
       text-align: center;
-      font-weight: normal;
-      margin: 0 0 20px;
+      margin: 10px 20px;
+      font-size: 1.1em;
     }
 
-    .cards {
+    .small-text {
+      font-size: 0.9em;
+      color: #5e4a4a;
+      margin-top: 10px;
+    }
+
+    #cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 15px;
-      max-width: 800px;
+      padding: 20px;
+      max-width: 1000px;
       width: 100%;
-      margin-bottom: 20px;
+      margin-top: 10px;
     }
 
     .card {
-      background: linear-gradient(to bottom, #d2b48c, #8b5e3c);
-      border-radius: 12px;
-      height: 140px;
+      background: #eee;
+      border-radius: 10px;
+      padding: 5px;
+      text-align: center;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.1em;
-      font-weight: bold;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
     }
 
     .card:hover {
-      transform: translateY(-5px);
+      transform: scale(1.05);
     }
 
-    .subtext {
-      font-size: 0.9em;
-      margin-top: 10px;
-      color: #6b4c3b;
+    #result {
+      display: none;
+      margin: 30px 20px;
       text-align: center;
     }
 
-    .result {
-      max-width: 600px;
-      margin-top: 30px;
-      text-align: center;
-    }
-
-    .result .card {
-      height: 180px;
-      font-size: 1.5em;
-    }
-
-    .message, .reflection {
-      margin: 20px 0;
-      text-align: left;
-    }
-
-    button {
-      background-color: #8b5e3c;
-      color: white;
-      border: none;
-      padding: 10px 20px;
+    #result img {
+      width: 250px;
+      max-width: 80vw;
       border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
-    button:hover {
-      background-color: #754c2e;
+    .label {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.1em;
+    }
+
+    #drawAgain {
+      margin-top: 30px;
+      background: #d4b3a5;
+      color: #4b2e2e;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #drawAgain:hover {
+      background: #c9a393;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2em; }
     }
   </style>
 </head>
 <body>
-  <div id="main">
-    <h1>Ask the Universe</h1>
-    <h2>Take a moment to think about a question, a situation or something that you would like clarity on.</h2>
 
-    <div class="cards" id="cardContainer"></div>
-    <div class="subtext">
-      Close your eyes, breathe deeply, and let your intuition guide you to the perfect card.
-    </div>
+  <h1>Ask the Universe</h1>
+  <p>Take a moment to think about a question, a situation or something that you would like clarity on.</p>
+
+  <div id="cards"></div>
+  <p class="small-text">Close your eyes, breathe deeply, and let your intuition guide you to the perfect card.</p>
+
+  <div id="result">
+    <img id="resultImage" src="" alt="Card" />
+    <div class="label">Message:</div>
+    <p id="message"></p>
+    <div class="label">Reflection:</div>
+    <p id="reflection"></p>
+    <button id="drawAgain">Draw Another Card</button>
   </div>
 
-  <div class="result" id="result" style="display: none;"></div>
-
   <script>
-    const cardsData = [
-      { name: "Act", image: "https://i.postimg.cc/fb9Bcs7y/Act.png", message: "It can feel scary but you got this. You’re being guided to move the needle forward in direction of your dreams and the pathway will appear.", reflection: "What is that one thing I’m being guided to act on today?" },
-      { name: "Ask", image: "https://i.postimg.cc/VLZR2vD5/Ask.png", message: "Ask and it will appear. Don’t hesitate to ask your spirit team for help, guidance and support. They are waiting to hear from you. From clarity to asking for signs, reach out to them.", reflection: "Is there a message that I have been not open to?" },
-      { name: "Co-create", image: "https://i.postimg.cc/Jz9Q4gwL/C0-create.png", message: "This is not an individual journey. This is the age of collaboration and co-creation. Call in the support and resources that you need.", reflection: "How can you become the vortex that pulls all resources towards it to birth your visions?" },
-      { name: "Community", image: "https://i.postimg.cc/zXG7dKw9/Community.png", message: "Your soul friends and family await you. Welcome them with an open heart and they will start flooding into your field. You’ll recognize them intuitively.", reflection: "How can you form a community that you are seeking?" },
-      { name: "Embody", image: "https://i.postimg.cc/T3y9xx40/Embody.png", message: "Embrace yourself, each and every aspect of you. All these versions of you exist to remind you of who can be. The magic lies in the process not the destination.", reflection: "Who could you become if you didn’t tell yourself who you needed to become?" },
-      { name: "Go within", image: "https://i.postimg.cc/9MBPbQDm/Go-Within.png", message: "Don’t look outside. Pause. Close your eyes. Clear your head. And ask yourself, 'What is it that I really desire?' You’re being called to take an honest look inside your heart.", reflection: "How can you be your own safe space and cheerleader?" },
-      { name: "Ground", image: "https://i.postimg.cc/3xDg6Bkb/Ground.png", message: "You’re being called to deeply anchor yourself to the heart of Gaia. Discharge the energy that does not belong to you and send it lovingly to Gaia.", reflection: "What are you being called to let go off?" },
-      { name: "Held", image: "https://i.postimg.cc/fTy77ZDs/Held.png", message: "You may be the one on physical Earth but there’s an entire team of Guides holding you energetically. Think of an etheric umbilical cord that keeps you connected.", reflection: "How can I lean more on this protective energy that engulfs me?" },
-      { name: "Receive", image: "https://i.postimg.cc/MZdbjXkt/Receive.png", message: "Be open to the blessings and guidance flowing your way with a receptive heart. Tune into your inner Divine Feminine to receive and hold space.", reflection: "How can you learn to receive from yourself and others?" },
-      { name: "Remember", image: "https://i.postimg.cc/zvBhkSm7/Remember.png", message: "You’re being called to merge and connect with your gifts, not just from this lifetime, but all your lifetimes. It’s happening.", reflection: "How can you tap more into your multidimensional nature?" },
-      { name: "Share", image: "https://i.postimg.cc/Qd5TSdz2/Share.png", message: "You didn’t choose this lifetime to be on the sidelines. Even if it feels scary, know that your gifts are meant to be seen, shared and celebrated.", reflection: "What does your body feel like when you go to share your authentic truth?" },
-      { name: "Soul Mission", image: "https://i.postimg.cc/brWZH79Y/Soul-Mission.png", message: "You came down with a purpose and this is very aligned to your soul’s journey. You’re being guided to continue on this path, just trust yourself.", reflection: "How is this action tied in to your deeper purpose?" },
-      { name: "Third Eye", image: "https://i.postimg.cc/mktc9LM6/Third-Eye.png", message: "Your Third Eye is going through a big activation currently. You may be opening yourself up to memories and insights from other realms as well. You may also be training in your sleep.", reflection: "What can you do to store all the downloads that you’re receiving?" },
-      { name: "Transmit", image: "https://i.postimg.cc/J7v0gWjM/Transmit.png", message: "You’re a channel - the ideas, inspirations and thoughts that you receive are here to be digested by you and transmitted through your Throat Chakra.", reflection: "How can you tune out the noise around you to listen deeper?" },
-      { name: "Visionary", image: "https://i.postimg.cc/yYRxCrT9/Visionary.png", message: "It can feel lonely not having a map to follow before you, but you are like no one else. You don’t need to wait for the world to validate your ideas. You’re here to birth a new way.", reflection: "How are the seeds that I’m sowing today, going to benefit humanity tomorrow?" },
-      { name: "Weave", image: "https://i.postimg.cc/mDqL0Qz8/Weave.png", message: "You are a weaver - you have the power to merge and alter timelines. You’re being asked to connect to your highest vision and create that in your physical.", reflection: "How can I birth my highest vision in the now?" },
-      { name: "Wise one", image: "https://i.postimg.cc/SsjQTZsn/Wise-One.png", message: "You’re an old soul who has lived lifetimes before in ancient civilizations. You’re being guided to unlock the technology of those times in your current timeline.", reflection: "Which timeline keeps appearing in front of you lately?" },
-      { name: "Yes", image: "https://i.postimg.cc/dQyZJ1sL/Yes.png", message: "That project or situation that you’ve been mulling over is absolutely aligned for you. This is your confirmation. Say YES!", reflection: "What is the fear that’s stopping you from saying yes?" }
-
+    const cards = [
+      {
+        name: "Act",
+        image: "https://i.postimg.cc/fb9Bcs7y/Act.png",
+        message: "It can feel scary but you got this. You’re being guided to move the needle forward in direction of your dreams and the pathway will appear.",
+        reflection: "What is that one thing I’m being guided to act on today?"
+      },
+      {
+        name: "Ask",
+        image: "https://i.postimg.cc/VLZR2vD5/Ask.png",
+        message: "Ask and it will appear. Don’t hesitate to ask your spirit team for help, guidance and support. They are waiting to hear from you. From clarity to asking for signs, reach out to them.",
+        reflection: "Is there a message that I have been not open to?"
+      },
+      {
+        name: "Co-create",
+        image: "https://i.postimg.cc/Jz9Q4gwL/C0-create.png",
+        message: "This is not an individual journey. This is the age of collaboration and co-creation. Call in the support and resources that you need.",
+        reflection: "How can you become the vortex that pulls all resources towards it to birth your visions?"
+      },
+      {
+        name: "Community",
+        image: "https://i.postimg.cc/zXG7dKw9/Community.png",
+        message: "Your soul friends and family await you. Welcome them with an open heart and they will start flooding into your field. You’ll recognize them intuitively.",
+        reflection: "How can you form a community that you are seeking?"
+      },
+      {
+        name: "Embody",
+        image: "https://i.postimg.cc/T3y9xx40/Embody.png",
+        message: "Embrace yourself, each and every aspect of you. All these versions of you exist to remind you of who can be. The magic lies in the process not the destination.",
+        reflection: "Who could you become if you didn’t tell yourself who you needed to become?"
+      },
+      {
+        name: "Go Within",
+        image: "https://i.postimg.cc/9MBPbQDm/Go-Within.png",
+        message: "Don’t look outside. Pause. Close your eyes. Clear your head. And ask yourself, “What is it that I really desire?” You’re being called to take an honest look inside your heart.",
+        reflection: "How can you be your own safe space and cheerleader?"
+      },
+      {
+        name: "Ground",
+        image: "https://i.postimg.cc/3xDg6Bkb/Ground.png",
+        message: "You’re being called to deeply anchor yourself to the heart of Gaia. Discharge the energy that does not belong to you and send it lovingly to Gaia.",
+        reflection: "What are you being called to let go of?"
+      },
+      {
+        name: "Held",
+        image: "https://i.postimg.cc/fTy77ZDs/Held.png",
+        message: "You may be the one on physical Earth but there’s an entire team of Guides holding you energetically. Think of an etheric umbilical cord that keeps you connected.",
+        reflection: "How can I lean more on this protective energy that engulfs me?"
+      },
+      {
+        name: "Receive",
+        image: "https://i.postimg.cc/MZdbjXkt/Receive.png",
+        message: "Be open to the blessings and guidance flowing your way with a receptive heart. Tune into your inner Divine Feminine to receive and hold space.",
+        reflection: "How can you learn to receive from yourself and others?"
+      },
+      {
+        name: "Remember",
+        image: "https://i.postimg.cc/zvBhkSm7/Remember.png",
+        message: "You’re being called to merge and connect with your gifts, not just from this lifetime, but all your lifetimes. It’s happening.",
+        reflection: "How can you tap more into your multidimensional nature?"
+      },
+      {
+        name: "Share",
+        image: "https://i.postimg.cc/Qd5TSdz2/Share.png",
+        message: "You didn’t choose this lifetime to be on the sidelines. Even if it feels scary, know that your gifts are meant to be seen, shared and celebrated.",
+        reflection: "What does your body feel like when you go to share your authentic truth?"
+      },
+      {
+        name: "Soul Mission",
+        image: "https://i.postimg.cc/brWZH79Y/Soul-Mission.png",
+        message: "You came down with a purpose and this is very aligned to your soul’s journey. You’re being guided to continue on this path, just trust yourself.",
+        reflection: "How is this action tied in to your deeper purpose?"
+      },
+      {
+        name: "Third Eye",
+        image: "https://i.postimg.cc/mktc9LM6/Third-Eye.png",
+        message: "Your Third Eye is going through a big activation currently. You may be opening yourself up to memories and insights from other realms as well. You may also be training in your sleep.",
+        reflection: "What can you do to store all the downloads that you’re receiving?"
+      },
+      {
+        name: "Transmit",
+        image: "https://i.postimg.cc/J7v0gWjM/Transmit.png",
+        message: "You’re a channel - the ideas, inspirations and thoughts that you receive are here to be digested by you and transmitted through your Throat Chakra.",
+        reflection: "How can you tune out the noise around you to listen deeper?"
+      },
+      {
+        name: "Visionary",
+        image: "https://i.postimg.cc/yYRxCrT9/Visionary.png",
+        message: "It can feel lonely not having a map to follow before you, but you are like no one else. You don’t need to wait for the world to validate your ideas. You’re here to birth a new way.",
+        reflection: "How are the seeds that I’m sowing today, going to benefit humanity tomorrow?"
+      },
+      {
+        name: "Weave",
+        image: "https://i.postimg.cc/mDqL0Qz8/Weave.png",
+        message: "You are a weaver - you have the power to merge and alter timelines. You’re being asked to connect to your highest vision and create that in your physical.",
+        reflection: "How can I birth my highest vision in the now?"
+      },
+      {
+        name: "Wise One",
+        image: "https://i.postimg.cc/SsjQTZsn/Wise-One.png",
+        message: "You’re an old soul who has lived lifetimes before in ancient civilizations. You’re being guided to unlock the technology of those times in your current timeline.",
+        reflection: "Which timeline keeps appearing in front of you lately?"
+      },
+      {
+        name: "Yes",
+        image: "https://i.postimg.cc/dQyZJ1sL/Yes.png",
+        message: "That project or situation that you’ve been mulling over is absolutely aligned for you. This is your confirmation. Say YES!",
+        reflection: "What is the fear that’s stopping you from saying yes?"
+      }
     ];
 
-    const cardContainer = document.getElementById('cardContainer');
-    const resultContainer = document.getElementById('result');
-    const main = document.getElementById('main');
+    const cardsContainer = document.getElementById('cards');
+    const result = document.getElementById('result');
+    const resultImage = document.getElementById('resultImage');
+    const message = document.getElementById('message');
+    const reflection = document.getElementById('reflection');
+    const drawAgain = document.getElementById('drawAgain');
 
-    // create card elements
-    cardsData.forEach((card, index) => {
-      const div = document.createElement('div');
-      div.className = 'card';
-      div.textContent = `Card ${index + 1}`;
-      div.onclick = () => showResult(index);
-      cardContainer.appendChild(div);
-    });
-
-    function showResult(index) {
-      const card = cardsData[index];
-      main.style.display = 'none';
-      resultContainer.style.display = 'block';
-      resultContainer.innerHTML = `
-        <div class="card">${card.title}</div>
-        <div class="message"><strong>Message:</strong> ${card.message}</div>
-        <div class="reflection"><strong>Reflection:</strong> ${card.reflection}</div>
-        <button onclick="drawAnother()">Draw Another Card</button>
-      `;
+    function showCards() {
+      result.style.display = 'none';
+      cardsContainer.innerHTML = '';
+      cards.forEach(card => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<img src="${card.image}" alt="${card.name}"/>`;
+        div.onclick = () => showResult(card);
+        cardsContainer.appendChild(div);
+      });
     }
 
-    function drawAnother() {
-      main.style.display = 'block';
-      resultContainer.style.display = 'none';
+    function showResult(card) {
+      cardsContainer.innerHTML = '';
+      result.style.display = 'block';
+      resultImage.src = card.image;
+      message.innerText = card.message;
+      reflection.innerText = card.reflection;
     }
+
+    drawAgain.onclick = showCards;
+
+    showCards();
   </script>
 </body>
 </html>
