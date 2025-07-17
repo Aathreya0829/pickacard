@@ -4,96 +4,146 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ask the Universe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: 'Georgia', serif;
-      background: linear-gradient(to bottom, #5e3c2d, #a37856);
-      color: #fff8f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lora', serif;
+      background: linear-gradient(to bottom right, #f6ede3, #dfcbbd);
+      color: #432818;
       min-height: 100vh;
     }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
     h1 {
-      margin-top: 40px;
-      font-size: 2.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      max-width: 600px;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .card-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
-
-    .card {
-      width: 150px;
-      height: 220px;
-      background: #1a1a1a;
-      border-radius: 15px;
-      border: 2px solid #d1a35f;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .message-box {
-      text-align: center;
-      margin-top: 40px;
-      padding: 20px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      max-width: 600px;
-      display: none;
-    }
-
-    .message-box h2 {
-      margin-bottom: 15px;
-      font-size: 1.6rem;
-    }
-
-    .message-box p {
       font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0.5rem auto;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+      position: relative;
+      height: 200px;
+    }
+
+    .card-stack img {
+      width: 120px;
+      margin-left: -80px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .card-stack img:hover {
+      transform: scale(1.05);
+      z-index: 2;
+    }
+
+    .result-screen {
+      display: none;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .card-large {
+      max-width: 300px;
+      margin-right: 3rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    .text-content {
+      max-width: 600px;
+      text-align: left;
+    }
+
+    .text-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
+
+    .text-content p {
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+
+    button {
+      background-color: #7b4b38;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .result-screen {
+        flex-direction: column;
+      }
+
+      .card-large {
+        margin-right: 0;
+        margin-bottom: 2rem;
+      }
+
+      .text-content {
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Ask the Universe...</h1>
-  <p>Take a moment to think about a question, a situation, or something that’s been on your heart lately.</p>
 
-  <div class="card-container" id="cardContainer">
-    <!-- 6 cards -->
-    <div class="card" onclick="revealMessage(0)"></div>
-    <div class="card" onclick="revealMessage(1)"></div>
-    <div class="card" onclick="revealMessage(2)"></div>
-    <div class="card" onclick="revealMessage(3)"></div>
-    <div class="card" onclick="revealMessage(4)"></div>
-    <div class="card" onclick="revealMessage(5)"></div>
+  <div class="container" id="home">
+    <h1>Ask the Universe ✨</h1>
+    <p>Take a moment to think about a question, a situation or something that you would like clarity on.</p>
+    <p style="font-size: 0.95rem;">Close your eyes, breathe deeply, and let your intuition guide you to the perfect card.</p>
+    <div class="cards card-stack" id="cards"></div>
   </div>
 
-  <div class="message-box" id="messageBox">
-    <h2 id="cardMessage"></h2>
-    <p id="cardReflection"></p>
+  <div class="result-screen" id="result">
+    <img id="cardImage" class="card-large" src="" alt="Selected Card" />
+    <div class="text-content">
+      <h2>Message:</h2>
+      <p id="messageText"></p>
+      <h2>Reflection:</h2>
+      <p id="reflectionText"></p>
+      <button onclick="goHome()">Go Back Home</button>
+    </div>
   </div>
 
   <script>
-    const messages = [
+    const cardsData = [
       { name: "Act", image: "https://i.postimg.cc/fb9Bcs7y/Act.png", message: "It can feel scary but you got this. You’re being guided to move the needle forward in direction of your dreams and the pathway will appear.", reflection: "What is that one thing I’m being guided to act on today?" },
       { name: "Ask", image: "https://i.postimg.cc/VLZR2vD5/Ask.png", message: "Ask and it will appear. Don’t hesitate to ask your spirit team for help, guidance and support. They are waiting to hear from you. From clarity to asking for signs, reach out to them.", reflection: "Is there a message that I have been not open to?" },
       { name: "Co-create", image: "https://i.postimg.cc/Jz9Q4gwL/C0-create.png", message: "This is not an individual journey. This is the age of collaboration and co-creation. Call in the support and resources that you need.", reflection: "How can you become the vortex that pulls all resources towards it to birth your visions?" },
@@ -112,22 +162,41 @@
       { name: "Weave", image: "https://i.postimg.cc/mDqL0Qz8/Weave.png", message: "You are a weaver - you have the power to merge and alter timelines. You’re being asked to connect to your highest vision and create that in your physical.", reflection: "How can I birth my highest vision in the now?" },
       { name: "Wise one", image: "https://i.postimg.cc/SsjQTZsn/Wise-One.png", message: "You’re an old soul who has lived lifetimes before in ancient civilizations. You’re being guided to unlock the technology of those times in your current timeline.", reflection: "Which timeline keeps appearing in front of you lately?" },
       { name: "Yes", image: "https://i.postimg.cc/dQyZJ1sL/Yes.png", message: "That project or situation that you’ve been mulling over is absolutely aligned for you. This is your confirmation. Say YES!", reflection: "What is the fear that’s stopping you from saying yes?" }
-
     ];
 
-    function revealMessage(index) {
-      // Hide all cards except the one clicked
-      const container = document.getElementById("cardContainer");
-      const cards = container.querySelectorAll(".card");
-      cards.forEach((card, i) => {
-        card.style.display = i === index ? "block" : "none";
-      });
+    const cardsContainer = document.getElementById('cards');
+    const homeScreen = document.getElementById('home');
+    const resultScreen = document.getElementById('result');
+    const cardImage = document.getElementById('cardImage');
+    const messageText = document.getElementById('messageText');
+    const reflectionText = document.getElementById('reflectionText');
 
-      // Show message
-      document.getElementById("cardMessage").innerText = messages[index].message;
-      document.getElementById("cardReflection").innerText = messages[index].reflection;
-      document.getElementById("messageBox").style.display = "block";
+    function displayCards() {
+      cardsData.forEach((card, index) => {
+        const img = document.createElement('img');
+        img.src = "https://via.placeholder.com/120x200?text=🂠"; // back of card look
+        img.alt = `Card ${index + 1}`;
+        img.onclick = () => showResult(card);
+        cardsContainer.appendChild(img);
+      });
     }
+
+    function showResult(card) {
+      homeScreen.style.display = 'none';
+      resultScreen.style.display = 'flex';
+      cardImage.src = card.image;
+      messageText.textContent = card.message;
+      reflectionText.textContent = card.reflection;
+    }
+
+    function goHome() {
+      resultScreen.style.display = 'none';
+      homeScreen.style.display = 'flex';
+    }
+
+    // Initialize
+    displayCards();
   </script>
+
 </body>
 </html>
