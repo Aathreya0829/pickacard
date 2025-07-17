@@ -8,86 +8,112 @@
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom, #fff8f0, #d2b48c);
+      background: #f9f6f1;
       font-family: 'Georgia', serif;
-      color: #4e342e;
+      color: #4a2c2a;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      flex-direction: column;
       min-height: 100vh;
     }
 
     .container {
       text-align: center;
-      padding: 20px;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #4a2c2a;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .card {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      max-width: 90%;
+      width: 120px;
+      height: 180px;
+      background: linear-gradient(to top, #a87c6d, #d6b79f);
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s;
     }
 
-    .card img {
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .result {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .result img {
+      max-width: 300px;
       width: 100%;
-      max-width: 350px;
-      border-radius: 15px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
     }
 
     .message {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 10px;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     .reflection {
-      font-size: 1.1rem;
-      color: #5d4037;
-    }
-
-    .pick-button {
-      padding: 12px 24px;
-      background-color: #8d6e63;
-      color: white;
+      font-style: italic;
       font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.3s;
-    }
-
-    .pick-button:hover {
-      background-color: #6d4c41;
     }
 
     @media (max-width: 600px) {
-      .message {
-        font-size: 1.3rem;
+      .card-container {
+        flex-direction: column;
+        align-items: center;
       }
-
-      .reflection {
-        font-size: 1rem;
+      .card {
+        width: 100px;
+        height: 150px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <button class="pick-button" onclick="showRandomCard()">Pick a Card ✨</button>
-    <div class="card" id="cardDisplay">
-      <img id="cardImage" src="" alt="Oracle Card" />
-      <div class="message" id="cardMessage"></div>
-      <div class="reflection" id="cardReflection"></div>
+  <div class="container" id="intro">
+    <h1>Ask the Universe</h1>
+    <p>
+      Take a moment to think about a question, a situation or something that you would like clarity on.
+      <br><br>
+      Close your eyes, breathe deeply, and let your intuition guide you to the perfect card.
+    </p>
+    <div class="card-container" id="cards">
+      <!-- 3 card placeholders -->
+      <div class="card" onclick="pickCard(0)"></div>
+      <div class="card" onclick="pickCard(1)"></div>
+      <div class="card" onclick="pickCard(2)"></div>
     </div>
   </div>
+
+  <div class="result" id="result">
+    <img id="cardImage" src="" alt="Card" />
+    <div class="message" id="cardMessage"></div>
+    <div class="reflection" id="cardReflection"></div>
+  </div>
+
 
   <script>
     const cards = [{ name: "Act", image: "https://i.postimg.cc/fb9Bcs7y/Act.png", message: "It can feel scary but you got this. You’re being guided to move the needle forward in direction of your dreams and the pathway will appear.", reflection: "What is that one thing I’m being guided to act on today?" },
@@ -111,15 +137,13 @@
 
     ];
 
-    function showRandomCard() {
-      const randomIndex = Math.floor(Math.random() * cards.length);
-      const selectedCard = cards[randomIndex];
-
-      document.getElementById("cardImage").src = selectedCard.image;
-      document.getElementById("cardMessage").innerText = selectedCard.message;
-      document.getElementById("cardReflection").innerText = selectedCard.reflection;
-
-      document.getElementById("cardDisplay").style.display = "flex";
+    function pickCard(index) {
+      const chosen = cards[index];
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("cardImage").src = chosen.image;
+      document.getElementById("cardMessage").textContent = chosen.message;
+      document.getElementById("cardReflection").textContent = chosen.reflection;
+      document.getElementById("result").style.display = "block";
     }
   </script>
 </body>
