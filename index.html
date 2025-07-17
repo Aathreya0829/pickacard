@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ask the Universe ✨</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div id="initial-view" class="card">
+        <h1>Ask the Universe ✨</h1>
+        <p>Take a moment to think about a question, situation, or something on your heart.</p>
+        <button onclick="pickCard()">Pick a Card</button>
+      </div>
+      <div id="card-view" class="card hidden">
+        <img id="card-image" src="" alt="Oracle Card" />
+        <h2 id="card-message"></h2>
+        <p id="card-reflection"></p>
+        <button onclick="reset()">Pick Another Card</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
