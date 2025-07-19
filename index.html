@@ -3,147 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ask the Universe</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora&display=swap" rel="stylesheet">
+  <title>Oracle Card Picker</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Lora', serif;
-      background: linear-gradient(to bottom right, #f6ede3, #dfcbbd);
-      color: #432818;
-      min-height: 100vh;
-    }
-
-    .container {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(180deg, #7A4E3B, #D4BFAA, #FFF1E0);
+      color: #5A3E36;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
       text-align: center;
+      padding: 20px;
     }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
-
-    p {
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0.5rem auto;
+    h1, p {
+      margin: 0.5rem 0;
     }
 
     .cards {
       display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
       justify-content: center;
       margin-top: 2rem;
-      position: relative;
-      height: 200px;
     }
 
-    .card-stack img {
+    .card {
       width: 120px;
-      margin-left: -80px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      height: 180px;
+      background: linear-gradient(to top, #3b2c28, #6f4e37);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: transform 0.3s ease-in-out;
     }
 
-    .card-stack img:hover {
-      transform: scale(1.05);
-      z-index: 2;
+    .card:hover {
+      transform: translateY(-8px);
     }
 
-    .result-screen {
+    .result {
       display: none;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 2rem;
-      min-height: 100vh;
     }
 
-    .card-large {
-      max-width: 300px;
-      margin-right: 3rem;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
+    .result img {
+      width: 220px;
+      height: auto;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
-    .text-content {
-      max-width: 600px;
-      text-align: left;
-    }
-
-    .text-content h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      margin-top: 1rem;
-    }
-
-    .text-content p {
-      margin: 1rem 0;
-      line-height: 1.6;
-    }
-
-    button {
-      background-color: #7b4b38;
-      color: white;
-      padding: 0.7rem 1.5rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .button {
+      margin-top: 1.5rem;
+      padding: 10px 20px;
       font-size: 1rem;
-      margin-top: 2rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #5A3E36;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    @media (max-width: 768px) {
-      .result-screen {
-        flex-direction: column;
-      }
-
-      .card-large {
-        margin-right: 0;
-        margin-bottom: 2rem;
-      }
-
-      .text-content {
-        text-align: center;
-      }
+    .button:hover {
+      background-color: #3b2c28;
     }
   </style>
 </head>
 <body>
 
-  <div class="container" id="home">
-    <h1>Ask the Universe ✨</h1>
-    <p>Take a moment to think about a question, a situation or something that you would like clarity on.</p>
-    <p style="font-size: 0.95rem;">Close your eyes, breathe deeply, and let your intuition guide you to the perfect card.</p>
-    <div class="cards card-stack" id="cards"></div>
+  <div class="intro">
+    <h1>Ask the Universe 💫</h1>
+    <p>Take a moment to think about a question or situation</p>
+    <p>Pick a card to receive a message</p>
   </div>
 
-  <div class="result-screen" id="result">
-    <img id="cardImage" class="card-large" src="" alt="Selected Card" />
-    <div class="text-content">
-      <h2>Message:</h2>
-      <p id="messageText"></p>
-      <h2>Reflection:</h2>
-      <p id="reflectionText"></p>
-      <button onclick="goHome()">Go Back Home</button>
-    </div>
+  <div class="cards" id="cardContainer"></div>
+
+  <div class="result" id="result">
+    <img id="cardImage" src="" alt="Card Image">
+    <h2 id="message"></h2>
+    <p id="reflection"></p>
+    <button class="button" onclick="goBack()">Go back home</button>
   </div>
 
   <script>
-    const cardsData = [
+    const cards = [
       { name: "Act", image: "https://i.postimg.cc/fb9Bcs7y/Act.png", message: "It can feel scary but you got this...", reflection: "What is that one thing I’m being guided to act on today?" },
       { name: "Ask", image: "https://i.postimg.cc/VLZR2vD5/Ask.png", message: "Ask and it will appear...", reflection: "Is there a message that I have been not open to?" },
       { name: "Co-create", image: "https://i.postimg.cc/Jz9Q4gwL/C0-create.png", message: "This is not an individual journey...", reflection: "How can you become the vortex..." },
@@ -164,47 +116,30 @@
       { name: "Yes", image: "https://i.postimg.cc/dQyZJ1sL/Yes.png", message: "That project or situation...", reflection: "What is the fear that’s stopping you from saying yes?" }
     ];
 
-    const cardsContainer = document.getElementById('cards');
-    const homeScreen = document.getElementById('home');
-    const resultScreen = document.getElementById('result');
-    const cardImage = document.getElementById('cardImage');
-    const messageText = document.getElementById('messageText');
-    const reflectionText = document.getElementById('reflectionText');
+    const container = document.getElementById('cardContainer');
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
+    // Render cards as backs only
+    cards.forEach(card => {
+      const div = document.createElement('div');
+      div.classList.add('card');
+      div.onclick = () => pickCard(card);
+      container.appendChild(div);
+    });
+
+    function pickCard(card) {
+      document.querySelector('.intro').style.display = 'none';
+      document.querySelector('.cards').style.display = 'none';
+
+      document.getElementById('cardImage').src = card.image;
+      document.getElementById('message').textContent = card.message;
+      document.getElementById('reflection').textContent = card.reflection;
+
+      document.getElementById('result').style.display = 'flex';
     }
 
-    function displayCards() {
-      shuffleArray(cardsData); // <-- SHUFFLE HERE
-      cardsData.forEach((card, index) => {
-        const img = document.createElement('img');
-        img.src = "https://i.postimg.cc/9fzvkHjv/2.png"; // card back
-        img.alt = `Card ${index + 1}`;
-        img.onclick = () => showResult(card);
-        cardsContainer.appendChild(img);
-      });
+    function goBack() {
+      location.reload();
     }
-
-    function showResult(card) {
-      homeScreen.style.display = 'none';
-      resultScreen.style.display = 'flex';
-      cardImage.src = card.image;
-      messageText.textContent = card.message;
-      reflectionText.textContent = card.reflection;
-    }
-
-    function goHome() {
-      resultScreen.style.display = 'none';
-      homeScreen.style.display = 'flex';
-    }
-
-    // Initialize on load
-    displayCards();
   </script>
-
 </body>
 </html>
